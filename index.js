@@ -1,5 +1,12 @@
-"use strict";
+export default function isChar(value, options) {
+  if (typeof value !== "string" || value.length !== 1) {
+    return false;
+  }
 
-module.exports = function isChar(value) {
-  return typeof value === "string" && value.length === 1;
-};
+  const expected = options?.is;
+  if (expected === undefined) {
+    return true;
+  }
+
+  return typeof expected === "string" && expected.length === 1 && value === expected;
+}

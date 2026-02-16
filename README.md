@@ -20,12 +20,14 @@ npm i is-char
 ## Usage
 
 ```js
-const isChar = require("is-char");
+import isChar from "is-char";
 
 isChar("a"); // true
 isChar("ab"); // false
 isChar(""); // false
 isChar(1); // false
+isChar("a", { is: "a" }); // true
+isChar("a", { is: "b" }); // false
 ```
 
 ## API
@@ -39,6 +41,14 @@ Returns `true` when:
 
 Otherwise returns `false`.
 
+### `isChar(value, { is })`
+
+If `is` is provided, `isChar` returns `true` only when:
+
+- `value` is a single-character string
+- `is` is a single-character string
+- `value === is`
+
 ## Character semantics
 
 `is-char` follows JavaScript string semantics and checks `value.length === 1` (UTF-16 code units).
@@ -47,7 +57,7 @@ This means some multi-code-unit characters (for example many emoji) return `fals
 ## TypeScript
 
 ```ts
-import isChar = require("is-char");
+import isChar from "is-char";
 ```
 
 Type definitions are included out of the box.

@@ -1,3 +1,5 @@
-declare function isChar(value: unknown): boolean;
+export interface IsCharOptions {
+  is?: string;
+}
 
-export = isChar;
+export default function isChar(value: unknown, options?: IsCharOptions): boolean;

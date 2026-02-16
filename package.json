@@ -1,0 +1,21 @@
+{
+  "name": "is-char",
+  "version": "1.0.0",
+  "description": "Check if a value is exactly one character.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "is-char",
+    "char",
+    "character",
+    "string"
+  ],
+  "author": "",
+  "license": "MIT"
+}

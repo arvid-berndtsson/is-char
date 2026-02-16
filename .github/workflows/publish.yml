@@ -30,11 +30,6 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: "2.x"
-
       - name: Determine target branch and version
         id: version
         shell: bash
@@ -103,7 +98,7 @@ jobs:
         run: npm publish --provenance --access public --registry https://registry.npmjs.org
 
       - name: Publish to JSR
-        run: deno publish
+        run: npx jsr publish
 
       - name: Create and push tag (workflow_dispatch only)
         if: github.event_name == 'workflow_dispatch'

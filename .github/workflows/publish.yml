@@ -1,0 +1,118 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (patch/minor/major or exact version like 1.2.3)"
+        required: true
+        default: "patch"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.target_commitish || github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: "2.x"
+
+      - name: Determine target branch and version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG_NAME="${{ github.event.release.tag_name }}"
+            VERSION="${TAG_NAME#v}"
+            TARGET_BRANCH="${{ github.event.release.target_commitish }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+
+            if [[ "$TARGET_BRANCH" =~ ^[0-9a-f]{40}$ ]]; then
+              TARGET_BRANCH="$DEFAULT_BRANCH"
+            fi
+          else
+            INPUT_VERSION="${{ github.event.inputs.version }}"
+            CURRENT_VERSION="$(node -p "require('./package.json').version")"
+            TARGET_BRANCH="${{ github.ref_name }}"
+
+            if [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              VERSION="$INPUT_VERSION"
+            else
+              IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+              case "$INPUT_VERSION" in
+                major)
+                  VERSION="$((MAJOR + 1)).0.0"
+                  ;;
+                minor)
+                  VERSION="$MAJOR.$((MINOR + 1)).0"
+                  ;;
+                patch)
+                  VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+                  ;;
+                *)
+                  echo "Invalid version input: $INPUT_VERSION"
+                  exit 1
+                  ;;
+              esac
+            fi
+          fi
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version must be SemVer (X.Y.Z). Got: $VERSION"
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "target_branch=$TARGET_BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Update version files
+        shell: bash
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('package.json','utf8')); p.version=process.argv[1]; fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\n');" "$VERSION"
+          node -e "const fs=require('fs'); const p=JSON.parse(fs.readFileSync('deno.json','utf8')); p.version=process.argv[1]; fs.writeFileSync('deno.json', JSON.stringify(p,null,2)+'\n');" "$VERSION"
+
+      - name: Commit and push version updates
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json deno.json
+          git commit -m "chore: release ${{ steps.version.outputs.version }}" || exit 0
+          git push origin "HEAD:${{ steps.version.outputs.target_branch }}"
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public --registry https://registry.npmjs.org
+
+      - name: Publish to JSR
+        run: deno publish
+
+      - name: Create and push tag (workflow_dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Tag v$VERSION already exists locally"
+          else
+            git tag "v$VERSION"
+          fi
+          git push origin "v$VERSION"

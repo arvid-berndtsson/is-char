@@ -1,9 +1,16 @@
 {
   "name": "is-char",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Check if a value is exactly one character.",
   "main": "index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.js",
+      "default": "./index.js"
+    }
+  },
   "files": [
     "index.js",
     "index.d.ts",

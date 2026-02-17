@@ -1,5 +1,8 @@
 # is-char
 
+[![npm version](https://img.shields.io/npm/v/is-char)](https://www.npmjs.com/package/is-char)
+[![JSR](https://jsr.io/badges/@arvid/is-char)](https://jsr.io/@arvid/is-char)
+
 `is-char` is a focused utility for one job: checking whether a value is a single-character string.
 
 In many codebases, this check appears in validators, parsers, CLIs, text filters, and protocol handlers. Keeping it in a dedicated package makes that intent explicit and reusable across projects.

@@ -16,8 +16,16 @@ In many codebases, this check appears in validators, parsers, CLIs, text filters
 
 ## Install
 
+### npm
+
 ```bash
 npm i is-char
+```
+
+### JSR
+
+```bash
+npx jsr add @arvid/is-char
 ```
 
 ## Usage

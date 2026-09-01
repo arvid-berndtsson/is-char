@@ -20,6 +20,9 @@ test("does not coerce boxed strings", () => {
 test("rejects surrogate pairs and combining sequences", () => {
   assert.equal(isChar("😀"), false);
   assert.equal(isChar("e\u0301"), false);
+  assert.equal(isChar("♥"), true);
+  assert.equal(isChar("\uD800"), true);
+  assert.equal(isChar("\u0000"), true);
 });
 
 test("matches an optional expected code unit", () => {

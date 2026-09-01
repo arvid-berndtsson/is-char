@@ -104,6 +104,59 @@ For Deno through JSR:
 import isChar from "jsr:@arvid/is-char";
 ```
 
+## Browser usage
+
+The package is browser-compatible because the implementation is dependency-free
+and uses only standard JavaScript string operations. It does not access Node.js
+APIs, the filesystem, or the DOM.
+
+### With a bundler
+
+Install the package and import it as an ESM module:
+
+```bash
+npm i is-char
+```
+
+```js
+import isChar from "is-char";
+
+const input = document.querySelector("input").value;
+const valid = isChar(input);
+```
+
+The package's `exports` entry points directly to its ESM implementation, so
+modern bundlers can include it in browser builds.
+
+### Direct browser import from a CDN
+
+For a browser that supports JavaScript modules, import the published package
+through a CDN:
+
+```html
+<script type="module">
+  import isChar from "https://cdn.jsdelivr.net/npm/is-char/index.js";
+
+  const value = document.querySelector("input").value;
+  document.querySelector("#result").textContent = String(isChar(value));
+</script>
+```
+
+For JSR users, an ESM CDN such as esm.sh can expose the JSR package to a
+browser:
+
+```html
+<script type="module">
+  import isChar from "https://esm.sh/jsr/@arvid/is-char";
+
+  console.log(isChar("a"));
+</script>
+```
+
+Browser support depends on the browser supporting JavaScript modules. The
+package itself does not require a framework, bundler, polyfill, or runtime
+adapter.
+
 ## TypeScript
 
 ```ts

@@ -57,6 +57,16 @@ export interface IsCharOptions {
  * @returns `true` if the value satisfies the UTF-16 code-unit rule and the
  *   optional matching constraint; otherwise `false`.
  *
+ * @example Browser usage through a CDN
+ * ```html
+ * <script type="module">
+ *   import isChar from "https://cdn.jsdelivr.net/npm/is-char@1.1.10/index.js";
+ *
+ *   const value = document.querySelector("input").value;
+ *   console.log(isChar(value));
+ * </script>
+ * ```
+ *
  * @example Basic validation
  * ```ts
  * import isChar from "jsr:@arvid/is-char";

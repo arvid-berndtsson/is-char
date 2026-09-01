@@ -135,7 +135,7 @@ through a CDN:
 
 ```html
 <script type="module">
-  import isChar from "https://cdn.jsdelivr.net/npm/is-char@1.1.10/index.js";
+  import isChar from "https://cdn.jsdelivr.net/npm/is-char/index.js";
 
   const value = document.querySelector("input").value;
   document.querySelector("#result").textContent = String(isChar(value));
@@ -147,7 +147,7 @@ browser:
 
 ```html
 <script type="module">
-  import isChar from "https://esm.sh/jsr/@arvid/is-char@1.1.10";
+  import isChar from "https://esm.sh/jsr/@arvid/is-char";
 
   console.log(isChar("a"));
 </script>

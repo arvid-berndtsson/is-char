@@ -60,7 +60,7 @@ export interface IsCharOptions {
  * @example Browser usage through a CDN
  * ```html
  * <script type="module">
- *   import isChar from "https://cdn.jsdelivr.net/npm/is-char@1.1.10/index.js";
+ *   import isChar from "https://cdn.jsdelivr.net/npm/is-char/index.js";
  *
  *   const value = document.querySelector("input").value;
  *   console.log(isChar(value));

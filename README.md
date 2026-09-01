@@ -95,6 +95,12 @@ import isChar from "jsr:@arvid/is-char";
 
 ```ts
 import isChar from "is-char";
+
+const value: unknown = "x";
+
+if (isChar(value)) {
+  console.log(`Single UTF-16 code unit: ${value}`);
+}
 ```
 
 Type definitions are included out of the box.

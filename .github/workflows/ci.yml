@@ -39,3 +39,19 @@ jobs:
 
       - name: Verify package contents
         run: npm pack --dry-run
+
+      - name: Verify packed package as a consumer
+        shell: bash
+        run: |
+          PACK_DIR="$RUNNER_TEMP/is-char-pack"
+          CONSUMER_DIR="$RUNNER_TEMP/is-char-consumer"
+          mkdir -p "$PACK_DIR" "$CONSUMER_DIR"
+          npm pack --pack-destination "$PACK_DIR" --json > "$RUNNER_TEMP/is-char-pack.json"
+          TARBALL_NAME="$(node -p 'require(process.argv[1])[0].filename' "$RUNNER_TEMP/is-char-pack.json")"
+          TARBALL="$PACK_DIR/$TARBALL_NAME"
+          npm init --yes --prefix "$CONSUMER_DIR" >/dev/null
+          npm install --no-save --prefix "$CONSUMER_DIR" "$TARBALL"
+          (
+            cd "$CONSUMER_DIR"
+            node --input-type=module -e 'import isChar from "is-char"; if (!isChar("a") || isChar("😀")) process.exit(1)'
+          )

@@ -3,6 +3,19 @@
 /**
  * Check whether a value is exactly one JavaScript UTF-16 code unit.
  *
+ * A value passes only when it is a primitive string and `value.length === 1`.
+ * JavaScript string length counts UTF-16 code units, not Unicode code points
+ * or user-perceived grapheme clusters.
+ *
+ * This means `"é"` passes, while `"e\\u0301"` and `"😀"` fail. The first
+ * contains two UTF-16 code units despite looking like one displayed character;
+ * the second is one Unicode code point represented by two UTF-16 code units.
+ * A single-code-unit symbol such as `"♥"` passes regardless of its rendering.
+ *
+ * The rule is deliberate and narrow. Use a Unicode code-point or grapheme
+ * library when those are the required semantics. This function does not
+ * coerce, trim, normalize, or transform its input.
+ *
  * When `options.is` is provided, the value must also match that code unit.
  *
  * @example Basic validation
@@ -77,9 +90,12 @@
  * // ["?", "!", ","]
  * ```
  *
- * @param {unknown} value The value to validate.
- * @param {{ is?: string }} [options] Optional matching constraint.
- * @returns {boolean} `true` when the value is exactly one character.
+ * @param {unknown} value The value to validate. Non-string values return `false`.
+ * @param {{ is?: string }} [options] Optional matching constraint. When
+ * `options.is` is defined, it must have exactly one UTF-16 code unit and equal
+ * the value. Invalid runtime values return `false`.
+ * @returns {boolean} `true` when the value satisfies the UTF-16 code-unit rule
+ * and the optional matching constraint; otherwise `false`.
  */
 export default function isChar(value, options) {
   if (typeof value !== "string" || value.length !== 1) {

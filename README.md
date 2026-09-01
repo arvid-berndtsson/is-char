@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/npm/l/is-char)](https://github.com/arvid-berndtsson/is-char/blob/main/LICENSE)
 [![Node.js >=18](https://img.shields.io/badge/node-%3E%3D18-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-`is-char` is a focused utility for one job: checking whether a value is a single-character string.
+`is-char` is a focused utility for one job: checking whether a value is exactly one JavaScript UTF-16 code unit.
 
 In many codebases, this check appears in validators, parsers, CLIs, text filters, and protocol handlers. Keeping it in a dedicated package makes that intent explicit and reusable across projects.
 

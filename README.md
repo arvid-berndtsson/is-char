@@ -60,22 +60,35 @@ Otherwise returns `false`.
 
 If `is` is provided, `isChar` returns `true` only when:
 
-- `value` is a single-character string
-- `is` is a single-character string
+- `value` is a single UTF-16 code unit string
+- `is` is a single UTF-16 code unit string
 - `value === is`
+
+An omitted `is` value, or `is: undefined`, applies no matching constraint. Other invalid `is` values return `false`.
 
 ## Character semantics
 
-`is-char` checks whether a value contains exactly one JavaScript UTF-16 code unit by using `value.length === 1`. It does not validate Unicode code points or user-perceived grapheme clusters.
+`is-char` deliberately uses JavaScript's simple string-length rule:
 
-| Input | Result |
-| --- | --- |
-| `"a"` | `true` |
-| `"é"` | `true` |
-| `"😀"` | `false` |
-| `"e\\u0301"` | `false` |
+```js
+typeof value === "string" && value.length === 1
+```
 
-Emoji use multiple UTF-16 code units and therefore return `false` by design.
+In this package, a char means exactly one UTF-16 code unit. This is not the same as a Unicode code point or a user-perceived grapheme cluster.
+
+| Input | UTF-16 code units | Result |
+| --- | ---: | --- |
+| `"a"` | 1 | `true` |
+| `"é"` | 1 | `true` |
+| `"e\\u0301"` | 2 | `false` |
+| `"😀"` | 2 | `false` |
+| `"ab"` | 2 | `false` |
+
+`"e\\u0301"` contains the letter `e` followed by a combining acute accent. It may be displayed as one user-perceived character, but it contains two UTF-16 code units, so this package returns `false`.
+
+Astral characters and multi-code-unit sequences, including many emoji, return `false`. Single-code-unit symbols such as `"♥"` return `true`.
+
+This package does not normalize strings, combine grapheme clusters, identify emoji, or coerce non-string values.
 
 ## JSR and Deno
 

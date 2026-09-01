@@ -1,9 +1,9 @@
 // @ts-self-types="./index.d.ts"
 
 /**
- * Check whether a value is a single-character string.
+ * Check whether a value is exactly one JavaScript UTF-16 code unit.
  *
- * When `options.is` is provided, the value must also match that character.
+ * When `options.is` is provided, the value must also match that code unit.
  *
  * @example Basic validation
  * ```js

@@ -7,7 +7,7 @@
  *
  * @example Basic validation
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * isChar("x"); // true
  * isChar("xy"); // false
@@ -16,7 +16,7 @@
  *
  * @example Require a specific character
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * isChar("y", { is: "y" }); // true
  * isChar("y", { is: "n" }); // false
@@ -24,7 +24,7 @@
  *
  * @example Filter user input to single characters
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * const raw = ["a", "ok", "b", "", "9"];
  * const singleChars = raw.filter((value) => isChar(value));
@@ -33,7 +33,7 @@
  *
  * @example Guard logic in a parser
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * function parseFlag(value) {
  *   if (!isChar(value, { is: "-" })) return "not-a-flag";
@@ -43,7 +43,7 @@
  *
  * @example Validate delimiters from config
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * function getDelimiter(config) {
  *   return isChar(config.delimiter) ? config.delimiter : ",";
@@ -52,7 +52,7 @@
  *
  * @example Reject multi-code-unit characters
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * isChar("é"); // true
  * isChar("😀"); // false
@@ -60,7 +60,7 @@
  *
  * @example Ignore invalid `is` values
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * isChar("a", { is: "ab" }); // false
  * isChar("a", { is: "" }); // false
@@ -68,7 +68,7 @@
  *
  * @example Keep punctuation tokens only
  * ```js
- * import isChar from "@arvid/is-char";
+ * import isChar from "is-char";
  *
  * const tokens = ["?", "..", "!", "ok", ","];
  * const punctuation = tokens.filter((token) =>

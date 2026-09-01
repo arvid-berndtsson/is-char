@@ -62,8 +62,30 @@ If `is` is provided, `isChar` returns `true` only when:
 
 ## Character semantics
 
-`is-char` follows JavaScript string semantics and checks `value.length === 1` (UTF-16 code units).
-This means some multi-code-unit characters (for example many emoji) return `false`.
+`is-char` checks whether a value contains exactly one JavaScript UTF-16 code unit by using `value.length === 1`. It does not validate Unicode code points or user-perceived grapheme clusters.
+
+| Input | Result |
+| --- | --- |
+| `"a"` | `true` |
+| `"é"` | `true` |
+| `"😀"` | `false` |
+| `"e\\u0301"` | `false` |
+
+Emoji use multiple UTF-16 code units and therefore return `false` by design.
+
+## JSR and Deno
+
+For npm, Node.js, and bundlers:
+
+```js
+import isChar from "is-char";
+```
+
+For Deno through JSR:
+
+```ts
+import isChar from "jsr:@arvid/is-char";
+```
 
 ## TypeScript
 

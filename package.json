@@ -17,6 +17,10 @@
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "check": "node --check index.js",
+    "test": "node --test"
+  },
   "keywords": [
     "is-char",
     "char",

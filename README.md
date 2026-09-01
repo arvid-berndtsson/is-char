@@ -1,7 +1,11 @@
 # is-char
 
+[![CI](https://github.com/arvid-berndtsson/is-char/actions/workflows/ci.yml/badge.svg)](https://github.com/arvid-berndtsson/is-char/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/is-char)](https://www.npmjs.com/package/is-char)
+[![npm downloads](https://img.shields.io/npm/dm/is-char)](https://www.npmjs.com/package/is-char)
 [![JSR](https://jsr.io/badges/@arvid/is-char)](https://jsr.io/@arvid/is-char)
+[![License](https://img.shields.io/npm/l/is-char)](https://github.com/arvid-berndtsson/is-char/blob/main/LICENSE)
+[![Node.js >=18](https://img.shields.io/badge/node-%3E%3D18-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
 `is-char` is a focused utility for one job: checking whether a value is a single-character string.
 

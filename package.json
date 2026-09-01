@@ -1,6 +1,6 @@
 {
   "name": "is-char",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "Check if a value is exactly one JavaScript UTF-16 code unit.",
   "type": "module",
   "main": "index.js",

@@ -38,6 +38,9 @@
   "engines": {
     "node": ">=18"
   },
-  "author": "",
-  "license": "MIT"
+  "author": "Arvid Berndtsson <npm@arvid.tech>",
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  }
 }

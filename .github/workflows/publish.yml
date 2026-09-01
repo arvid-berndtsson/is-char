@@ -132,17 +132,22 @@ jobs:
           }
           NODE
 
-      - name: Check whether version is already published
+      - name: Check publication status
         id: published
         env:
           VERSION: ${{ steps.version.outputs.version }}
         shell: bash
         run: |
           if npm view "is-char@$VERSION" version --registry https://registry.npmjs.org >/dev/null 2>&1; then
-            echo "already=true" >> "$GITHUB_OUTPUT"
-            echo "is-char@$VERSION is already published; release publication steps will be skipped"
+            echo "npm=true" >> "$GITHUB_OUTPUT"
           else
-            echo "already=false" >> "$GITHUB_OUTPUT"
+            echo "npm=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if curl --fail --silent --show-error "https://jsr.io/@arvid/is-char/${VERSION}_meta.json" >/dev/null; then
+            echo "jsr=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "jsr=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Install dependencies
@@ -158,9 +163,9 @@ jobs:
         run: node --input-type=module -e 'import isChar from "./index.js"; if (!isChar("a")) process.exit(1)'
 
       - name: Publish to npm
-        if: steps.published.outputs.already != 'true'
+        if: steps.published.outputs.npm != 'true'
         run: npm publish --provenance --access public --registry https://registry.npmjs.org
 
       - name: Publish to JSR
-        if: steps.published.outputs.already != 'true'
+        if: steps.published.outputs.jsr != 'true'
         run: npx jsr publish
